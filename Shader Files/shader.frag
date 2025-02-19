@@ -17,14 +17,14 @@ in vec3 fragPos;
 out vec4 FragColor;
 
 // Fast Voxel Traversal from Woo and Amanatides
-float traverse(vec3 rayOrigin, vec3 rayDir) {
-	int x = int(floor(rayOrigin.x));
-	int y = int(floor(rayOrigin.y));
-	int z = int(floor(rayOrigin.z));	
-	
+int traverse(vec3 rayOrigin, vec3 rayDir) {
 	int stepX = int(sign(rayDir.x));
 	int stepY = int(sign(rayDir.y));
 	int stepZ = int(sign(rayDir.z));
+
+	int x = int(floor(rayOrigin.x)) - (stepX == 1 ? 0 : 1);
+	int y = int(floor(rayOrigin.y)) - (stepY == 1 ? 0 : 1);
+	int z = int(floor(rayOrigin.z)) - (stepZ == 1 ? 0 : 1);
 
 	float tDeltaX = stepX / rayDir.x;
 	float tDeltaY = stepY / rayDir.y;
@@ -36,7 +36,7 @@ float traverse(vec3 rayOrigin, vec3 rayDir) {
 
 	ivec3 textureDim = textureSize(sphereVolume, 0);
 
-	while (x >= 0 && y >= 0 && z >= 0 && x <= textureDim.x && y <= textureDim.y && z <= textureDim.z) {
+	while (x >= 0 && y >= 0 && z >= 0 && x < textureDim.x && y < textureDim.y && z < textureDim.z) {
 		if (tMaxX < tMaxY) {
 		  if (tMaxX < tMaxZ) {
 			x += stepX;
@@ -54,7 +54,7 @@ float traverse(vec3 rayOrigin, vec3 rayDir) {
 			tMaxZ += tDeltaZ;
 		  }
 		} 
-		vec3 texCoord = vec3(x,y,z) / vec3(textureDim + 1);
+		vec3 texCoord = (vec3(x,y,z) + 0.5) / vec3(textureDim);
 		int textureValue = int(texture(sphereVolume, texCoord).r);
 
 		if (textureValue > 0) {
@@ -67,10 +67,7 @@ float traverse(vec3 rayOrigin, vec3 rayDir) {
 
 void main()
 {
-	vec2 ndc = (gl_FragCoord.xy / vec2(windowWidth, windowHeight)) * 2.0 - 1.0;
-	vec4 pixelPos = inverse(projection) * vec4(ndc, 1.0, 1.0);
-	pixelPos /= pixelPos.w;
-	vec3 rayOrigin = vec3(inverse(model) * vec4(fragPos, 1.0));
-	vec3 rayDir = normalize(vec3(inverse(view) * pixelPos) - viewPos);
+	vec3 rayOrigin = vec3(fragPos);
+	vec3 rayDir = normalize(vec3(fragPos) - viewPos);
 	FragColor = vec4(rayOrigin / textureSize(sphereVolume, 0), 1.0)  * traverse(rayOrigin, rayDir);
 }
