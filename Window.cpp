@@ -43,25 +43,28 @@ void Window::processInput()
 	}
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 	{
-		camera.forward(deltaTime);
+		camera.forward(deltaTime * 100);
 	}
     if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
 	{
-		camera.backward(deltaTime);
+		camera.backward(deltaTime * 100);
 	}
     if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
 	{
-		camera.left(deltaTime);
+		camera.left(deltaTime * 100);
 	}
     if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
 	{
-		camera.right(deltaTime);
+		camera.right(deltaTime * 100);
 	}
 }
 
 void Window::framebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
+	Window* w = (Window*)glfwGetWindowUserPointer(window);
 	glViewport(0, 0, width, height);
+	w->height = height;
+	w->width = width;
 }
 
 Window::Window()
@@ -75,7 +78,7 @@ Window::Window()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	window = glfwCreateWindow(600, 600, "Ant Simulation", NULL, NULL);
+	window = glfwCreateWindow(height, width, "Ant Simulation", NULL, NULL);
 	if (!window)
 	{
 		std::cerr << "Window creation failed." << std::endl;

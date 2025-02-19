@@ -22,6 +22,8 @@ struct Window {
 
 	bool initialized = false;
 	GLFWwindow* window;
+	int height = 600; 
+	int width = 600;
 	Camera camera;
 	double lastFrame = 0.0;
 	double deltaTime = 0.0;
