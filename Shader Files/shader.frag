@@ -22,9 +22,9 @@ int traverse(vec3 rayOrigin, vec3 rayDir) {
 	int stepY = int(sign(rayDir.y));
 	int stepZ = int(sign(rayDir.z));
 
-	int x = int(floor(rayOrigin.x)) - (stepX == 1 ? 0 : 1);
-	int y = int(floor(rayOrigin.y)) - (stepY == 1 ? 0 : 1);
-	int z = int(floor(rayOrigin.z)) - (stepZ == 1 ? 0 : 1);
+	int x = int(floor(rayOrigin.x));
+	int y = int(floor(rayOrigin.y));
+	int z = int(floor(rayOrigin.z));
 
 	float tDeltaX = stepX / rayDir.x;
 	float tDeltaY = stepY / rayDir.y;
@@ -69,5 +69,5 @@ void main()
 {
 	vec3 rayOrigin = vec3(fragPos);
 	vec3 rayDir = normalize(rayOrigin - viewPos);
-	FragColor = vec4(rayOrigin / textureSize(sphereVolume, 0), 1.0)  * traverse(rayOrigin, rayDir);
+	FragColor = vec4(1.0, 0, 0, 1.0)  * traverse(rayOrigin, rayDir);
 }

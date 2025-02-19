@@ -47,13 +47,13 @@ Mesh boundingBoxSphere() {
 	Mesh mesh;
 	std::vector<glm::vec3>* vertices = &mesh.vertices;
 	vertices->push_back(glm::vec3(0, 0, 0));
-	vertices->push_back(glm::vec3(20, 0, 0));
-	vertices->push_back(glm::vec3(0, 20, 0));
-	vertices->push_back(glm::vec3(20, 20, 0));
-	vertices->push_back(glm::vec3(0, 0, 20));
-	vertices->push_back(glm::vec3(20, 0, 20));
-	vertices->push_back(glm::vec3(0, 20, 20));
-	vertices->push_back(glm::vec3(20, 20, 20));
+	vertices->push_back(glm::vec3(19, 0, 0));
+	vertices->push_back(glm::vec3(0, 19, 0));
+	vertices->push_back(glm::vec3(19, 19, 0));
+	vertices->push_back(glm::vec3(0, 0, 19));
+	vertices->push_back(glm::vec3(19, 0, 19));
+	vertices->push_back(glm::vec3(0, 19, 19));
+	vertices->push_back(glm::vec3(19, 19, 19));
 
 	mesh.addFaceByIndices(0, 1, 2);
 	mesh.addFaceByIndices(1, 3, 2);
@@ -156,8 +156,6 @@ int main()
 	glTexImage3D(GL_TEXTURE_3D, 0, GL_RED, 20, 20, 20, 0, GL_RED, GL_UNSIGNED_BYTE, volume.data());
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-	glm::mat4 translation = glm::translate(glm::mat4(1.), glm::vec3(0., 0., -2.));
-	glm::mat4 modelView = glm::rotate(translation, 45.f, glm::vec3(1., 0., 0.));
 	glm::mat4 projection = glm::perspective(glm::radians(60.0), 16.0/9.0, 0.1, 1000.0);
 
 	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
